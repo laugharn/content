@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "next": "10.0.3",
+    "react": "17.0.1",
+    "react-dom": "17.0.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "10.1.0",
+    "postcss": "8.2.1",
+    "tailwindcss": "2.0.2"
+  },
+  "scripts": {
+    "dev": "next"
+  }
+}
