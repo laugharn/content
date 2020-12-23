@@ -1,9 +1,13 @@
 {
   "dependencies": {
     "@prisma/client": "2.13.1",
-    "date-fns": "^2.16.1",
+    "ajv": "6.12.6",
+    "autosize": "4.0.2",
+    "date-fns": "2.16.1",
+    "dot-object": "2.1.4",
     "faker": "5.1.0",
-    "lodash": "^4.17.20",
+    "formik": "2.2.5",
+    "lodash": "4.17.20",
     "next": "10.0.3",
     "next-mdx-remote": "1.0.0",
     "react": "17.0.1",
@@ -11,6 +15,7 @@
   },
   "devDependencies": {
     "@prisma/cli": "2.13.1",
+    "@tailwindcss/forms": "0.2.1",
     "autoprefixer": "10.1.0",
     "postcss": "8.2.1",
     "tailwindcss": "2.0.2"

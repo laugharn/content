@@ -7,6 +7,7 @@ Object.entries(defaultTheme.fontSize).forEach(([key, value]) => {
 });
 
 const config = {
+  plugins: [require("@tailwindcss/forms")],
   theme: {
     fontSize,
   },
