@@ -20,7 +20,7 @@ export const LayoutChannel = ({ channel, children }) => {
         <div className="flex max-w-3xl mx-auto">
           <div className="flex-1 my-auto p-4">
             <Link href={createChannelLink(channel)}>
-              <a className="hover:text-gray-500">{channel.title}</a>
+              <a className="hover:text-gray-500">{channel.meta?.title}</a>
             </Link>
           </div>
           <div className="p-4">

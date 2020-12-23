@@ -5,20 +5,20 @@ export const Channel = ({ channel, showBorder = true }) => {
   return (
     <div className="flex flex-wrap w-full">
       <div className="p-4 w-1/3">
-        <img className="block w-full" src={channel.image} />
+        <img className="block w-full" src={channel.meta?.image} />
       </div>
       <div className="p-4 w-2/3">
         <h2>
           <Link href={`/channels/${channel.name}`}>
             <a className="font-bold leading-tight text-xl tracking-tight hover:text-gray-500">
-              {channel.title}
+              {channel.meta?.title}
             </a>
           </Link>
         </h2>
         <p className="mb-2 text-gray-700">
-          by {channel.owner} • {format(new Date(channel.date), "MM/yy")}
+          by {channel.owner?.meta?.displayName} • {format(new Date(), "MM/yy")}
         </p>
-        {channel.description && <p className="text-gray-500">{channel.description}.</p>}
+        {channel.meta?.description && <p className="text-gray-500">{channel.meta?.description}.</p>}
       </div>
       {showBorder && (
         <div className="px-4 w-full">

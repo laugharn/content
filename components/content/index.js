@@ -1,7 +1,7 @@
 import hydrate from 'next-mdx-remote/hydrate'
 
 export const components = {
-  p: ({ children }) => <p className="mb-4">{children}</p>,
+  p: ({ children }) => <p className="mb-5 text-lg">{children}</p>,
 };
 
 export const Content = ({ source }) => {

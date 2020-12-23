@@ -1,0 +1,73 @@
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model Category {
+    id       Int       @id @default(autoincrement())
+    // Fields
+    name     String    @unique
+    // Relations
+    channels Channel[]
+}
+
+model Channel {
+    id           Int            @id @default(autoincrement())
+    // Fields
+    meta         Json           @default("{}")
+    name         String         @unique
+    // Relations
+    categories   Category[]
+    ownerId      Int
+    owner        User           @relation(fields: [ownerId], references: [id])
+    posts        Post[]
+    // Timestamps
+    createdAt    DateTime       @default(now())
+    updatedAt    DateTime       @default(now()) @updatedAt
+    Subscription Subscription[]
+}
+
+model Post {
+    id          Int       @id @default(autoincrement())
+    // Fields
+    body        String
+    meta        Json      @default("{}")
+    revisions   Json      @default("[]")
+    status      String    @default("drafted")
+    // Relations
+    channelId   Int
+    channel     Channel   @relation(fields: [channelId], references: [id])
+    userId      Int
+    user        User      @relation(fields: [userId], references: [id])
+    // Timestamps
+    createdAt   DateTime  @default(now())
+    publishedAt DateTime?
+    updatedAt   DateTime  @default(now()) @updatedAt
+}
+
+model Subscription {
+    id        Int     @id @default(autoincrement())
+    // Relations
+    channelId Int
+    channel   Channel @relation(fields: [channelId], references: [id])
+    userId    Int
+    user      User    @relation(fields: [userId], references: [id])
+}
+
+model User {
+    id            Int            @id @default(autoincrement())
+    // Fields
+    email         String         @unique
+    meta          Json           @default("{}")
+    // Relations
+    channels      Channel[]
+    posts         Post[]
+    subscriptions Subscription[]
+    // Timestamps
+    createdAt     DateTime       @default(now())
+    updatedAt     DateTime       @default(now()) @updatedAt
+}

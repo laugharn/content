@@ -1,8 +1,7 @@
 import { components } from "~/components/content";
-import { createChannel } from "~/lib/channel";
-import { createPost } from "~/lib/post";
 import { LayoutChannel } from "~/components/layout";
 import { Post } from "~/components/post";
+import { PrismaClient } from "@prisma/client";
 import renderToString from "next-mdx-remote/render-to-string";
 
 const Page = ({ channel, post, source }) => {
@@ -21,12 +20,32 @@ export const getStaticPaths = () => {
 };
 
 export const getStaticProps = async (context) => {
-  const post = createPost();
+  const arr = context.params.post.split('-')
+  const id = arr[arr.length - 1]
+
+  const prisma = new PrismaClient();
+  await prisma.$connect();
+
+  const [channel, post] = await Promise.all([
+    prisma.channel.findUnique({
+      where: {
+        name: context.params.channel,
+      },
+    }),
+    prisma.post.findFirst({
+      where: {
+        channel: {
+          name: context.params.channel,
+        },
+        id: parseInt(id),
+      },
+    }),
+  ]);
 
   return {
     props: {
-      channel: createChannel(),
-      post,
+      channel: JSON.parse(JSON.stringify(channel)),
+      post: JSON.parse(JSON.stringify(post)),
       source: await renderToString(post.body, { components }),
     },
     revalidate: 1,

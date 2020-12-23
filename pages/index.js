@@ -1,6 +1,6 @@
 import { Channels } from "~/components/channel";
-import { createChannels } from "~/lib/channel";
 import { LayoutRoot } from "~/components/layout";
+import { PrismaClient } from "@prisma/client";
 
 const Page = ({ channels }) => {
   return (
@@ -15,9 +15,20 @@ const Page = ({ channels }) => {
 };
 
 export const getStaticProps = async (context) => {
+  const prisma = new PrismaClient();
+  await prisma.$connect()
+
+  const channels = await prisma.channel.findMany({
+    include: {
+      owner: true,
+    }
+  });
+
+  await prisma.$disconnect()
+
   return {
     props: {
-      channels: createChannels(),
+      channels: JSON.parse(JSON.stringify(channels)),
     },
     revalidate: 1,
   };
