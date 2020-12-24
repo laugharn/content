@@ -41,6 +41,7 @@ export const getStaticProps = async (context) => {
           name: context.params.channel,
         },
         id: parseInt(id),
+        status: 'published',
       },
     }),
   ])

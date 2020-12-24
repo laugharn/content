@@ -10,6 +10,8 @@ const useContainer = () => {
   const [user, setUser] = useState()
   const [userCookie, setUserCookie] = useState()
 
+  const userHomeLink = userCookie?.email ? '/home' : '/'
+
   useEffect(() => {
     const cookie = Cookie.getJSON('content_public')
     setUserCookie(cookie ?? {})
@@ -38,10 +40,10 @@ const useContainer = () => {
     setUser()
     setUserCookie()
 
-    push('/login')
+    push(`/login?redirect=${asPath}`)
   }
 
-  return { login, logout, setUser, user, userCookie }
+  return { login, logout, setUser, user, userCookie, userHomeLink }
 }
 
 export const { Provider: UserProvider, useContainer: useUser } = createContainer(useContainer)

@@ -8,12 +8,12 @@ export const Post = ({ channel, post, source }) => {
       <div className="p-4 w-full">
         <h1>
           <Link href={`/channels/${channel.name}/posts/${post.id}`}>
-            <a className="font-bold leading-tight text-4xl tracking-tight hover:text-gray-500">
+            <a className="font-bold leading-tight hover:text-gray-500 text-4xl tracking-tight">
               {post.meta?.title}
             </a>
           </Link>
         </h1>
-        {post.meta?.description && <p className="text-gray-700">{post.meta?.description}</p>}
+        {post.meta?.description && <p className="text-gray-700 text-lg">{post.meta?.description}</p>}
       </div>
       <div className="flex p-4">
         <div className="bg-black h-12 rounded w-12" />

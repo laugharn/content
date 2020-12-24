@@ -28,10 +28,14 @@ export const getStaticProps = async (context) => {
       },
     }),
     prisma.post.findMany({
+      orderBy: {
+        id: 'desc',
+      },
       where: {
         channel: {
           name: context.params.channel,
         },
+        status: 'published',
       },
     }),
   ])

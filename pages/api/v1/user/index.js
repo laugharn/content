@@ -8,7 +8,7 @@ const destroy = async (req, res) => {
 }
 
 const login = async (req, res) => {
-  const { code, dev, email, redirect = '/' } = req.body
+  const { code, dev, email, redirect = '/home' } = req.body
 
   if (dev) {
     if (process.env.NEXT_PUBLIC_GIT_COMMIT_REF === 'main') {

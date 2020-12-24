@@ -1,15 +1,18 @@
 import { createChannelLink } from '~/lib/channel'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useUser } from '~/containers/user'
 
 const Footer = () => {
+  const { userHomeLink } = useUser()
+
   return (
-    <div className="border-t w-full">
+    <div className="w-full">
       <div className="max-w-5xl mx-auto">
-        <div className="px-4 py-8 text-center">
+        <div className="font-bold px-4 py-8 text-center text-gray-300">
           &copy;2020, all rights reserved. Powered by{' '}
-          <Link href="/">
-            <a className="hover:text-gray-500">Content.</a>
+          <Link href={userHomeLink}>
+            <a className="text-black hover:text-gray-500">Content.</a>
           </Link>
         </div>
       </div>
@@ -21,11 +24,11 @@ export const LayoutChannel = ({ channel, children }) => {
   return (
     <div className="w-full">
       <User />
-      <div className="border-b w-full">
+      <div className="w-full">
         <div className="flex max-w-3xl mx-auto">
           <div className="flex-1 my-auto p-4">
             <Link href={createChannelLink(channel)}>
-              <a className="hover:text-gray-500">{channel.meta?.title}</a>
+              <a className="font-bold hover:text-gray-500">{channel.meta?.title}</a>
             </Link>
           </div>
           <div className="p-4">
@@ -47,19 +50,25 @@ export const LayoutChannel = ({ channel, children }) => {
 }
 
 export const LayoutRoot = ({ children }) => {
-  const { userCookie } = useUser()
+  const { asPath } = useRouter()
+  const { userCookie, userHomeLink } = useUser()
 
   return (
     <div className="w-full">
       <User />
-      <div className="border-b w-full">
+      <div className="w-full">
         <div className="flex max-w-5xl mx-auto">
           <div className="flex-1 my-auto p-4">
-            <Link href="/">
+            <Link href={userHomeLink}>
               <a className="font-bold hover:text-gray-500">Content</a>
             </Link>
           </div>
           <div className="p-4">
+            {!userCookie?.email && <Link href={`/signup?redirect=${asPath === '/' ? '/home' : asPath}`}>
+                <button className="bg-teal-300 hover:bg-gray-500 leading-none mr-4 p-4 rounded">
+                  Sign Up
+                </button>
+              </Link>}
             {userCookie?.email ? (
               <Link href="/create">
                 <button className="bg-black hover:bg-gray-500 leading-none p-4 rounded text-white">
@@ -67,7 +76,7 @@ export const LayoutRoot = ({ children }) => {
                 </button>
               </Link>
             ) : (
-              <Link href="/login">
+              <Link href={`/login?redirect=${asPath === '/' ? '/home' : asPath}`}>
                 <button className="bg-black hover:bg-gray-500 leading-none p-4 rounded text-white">
                   Login
                 </button>

@@ -20,6 +20,7 @@ model Channel {
     // Fields
     meta         Json           @default("{}")
     name         String         @unique
+    settings     Json           @default("{}")
     // Relations
     categories   Category[]
     ownerId      Int
@@ -35,6 +36,7 @@ model Pass {
     id        Int      @id @default(autoincrement())
     // Fields
     code      String   @unique
+    meta      Json     @default("{}")
     redirect  String?
     // Relations
     userId    Int
@@ -50,6 +52,7 @@ model Post {
     body        String
     meta        Json      @default("{}")
     revisions   Json      @default("[]")
+    settings    Json      @default("{}")
     status      String    @default("drafted")
     // Relations
     channelId   Int
