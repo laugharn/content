@@ -16,7 +16,15 @@ export const Post = ({ channel, post, source }) => {
         {post.meta?.description && (
           <p className="text-gray-700">{post.meta?.description}</p>
         )}
-        <p className="mt-4 text-gray-300">Dec 21, 2020</p>
+      </div>
+      <div className="flex p-4">
+        <div className="bg-black h-12 rounded w-12" />
+        <div className="pl-2">
+          <ul>
+            <li>{post.user?.meta?.displayName}</li>
+            <li className="text-gray-300">{post.createdAt}</li>
+          </ul>
+        </div>
       </div>
       <div className="p-4 w-full">
         <Content source={source} />

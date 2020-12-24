@@ -31,6 +31,19 @@ model Channel {
     Subscription Subscription[]
 }
 
+model Pass {
+    id        Int      @id @default(autoincrement())
+    // Fields
+    code      String   @unique
+    redirect  String?
+    // Relations
+    userId    Int
+    user      User     @relation(fields: [userId], references: [id])
+    // Timestamps
+    createdAt DateTime @default(now())
+    expiredAt DateTime
+}
+
 model Post {
     id          Int       @id @default(autoincrement())
     // Fields
@@ -65,6 +78,7 @@ model User {
     meta          Json           @default("{}")
     // Relations
     channels      Channel[]
+    passes        Pass[]
     posts         Post[]
     subscriptions Subscription[]
     // Timestamps

@@ -33,6 +33,9 @@ export const getStaticProps = async (context) => {
       },
     }),
     prisma.post.findFirst({
+      include: {
+        user: true,
+      },
       where: {
         channel: {
           name: context.params.channel,
@@ -41,6 +44,8 @@ export const getStaticProps = async (context) => {
       },
     }),
   ]);
+
+  await prisma.$disconnect()
 
   return {
     props: {

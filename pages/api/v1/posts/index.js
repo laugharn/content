@@ -1,10 +1,11 @@
 import { PrismaClient } from "@prisma/client";
+import { withSession } from '~/lib/session'
 
 const handler = async (req, res) => {
   const prisma = new PrismaClient();
   await prisma.$connect();
 
-  const { channelId, userId, ...data } = req.body
+  const { channelId, ...data } = req.body
 
   const post = await prisma.post.create({
     data: {
@@ -16,7 +17,7 @@ const handler = async (req, res) => {
       },
       user: {
         connect: {
-          id: userId,
+          id: req.session.get('user').id,
         }
       }
     },
@@ -30,4 +31,4 @@ const handler = async (req, res) => {
   res.json(post);
 };
 
-export default handler;
+export default withSession(handler);

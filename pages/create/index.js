@@ -1,5 +1,6 @@
 import { Input } from "~/components/input";
 import { LayoutRoot } from "~/components/layout";
+import { POST } from '~/lib/http'
 import { PrismaClient } from "@prisma/client";
 import { Select } from "~/components/select";
 import { Textarea } from "~/components/textarea";
@@ -19,13 +20,12 @@ const schema = {
       },
       type: "object",
     },
-    userId: { type: "number" },
   },
-  required: ["body", "channelId", "status", "userId"],
+  required: ["body", "channelId", "status"],
   type: "object",
 };
 
-const Page = ({ channels, users }) => {
+const Page = ({ channels }) => {
   const { push } = useRouter();
 
   const form = useFormik({
@@ -37,16 +37,9 @@ const Page = ({ channels, users }) => {
         title: "",
       },
       status: "",
-      userId: "",
     },
     onSubmit: async (values) => {
-      const post = await fetch("/api/v1/posts", {
-        body: JSON.stringify(values),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-      }).then((response) => response.json());
+      const post = await POST("/api/v1/posts", values)
 
       push(`/channels/${post.channel.name}/posts/${post.id}`);
     },
@@ -61,16 +54,9 @@ const Page = ({ channels, users }) => {
       } 
   }, [form.values?.channelId])
 
-  useEffect(() => {
-    if (form.values?.userId) {
-        form.setFieldValue('userId', parseInt(form.values.userId))
-    } 
-}, [form.values?.userId])
-
   return (
     <LayoutRoot>
       <div className="max-w-3xl mx-auto px-4 py-4">
-          {JSON.stringify(form.values)}
         <form onSubmit={form.handleSubmit}>
           <div className="py-2 w-full">
             <Input
@@ -138,21 +124,6 @@ const Page = ({ channels, users }) => {
             />
           </div>
           <div className="py-2 w-full">
-            <Select
-              error={form.errors.userId}
-              label="User"
-              name="userId"
-              onBlur={form.handleBlur}
-              onChange={form.handleChange}
-              options={users.map((user) => ({
-                title: user.meta?.displayName,
-                value: user.id,
-              }))}
-              touched={form.touched.userId}
-              value={form.values.userId}
-            />
-          </div>
-          <div className="py-2 w-full">
             <button
               className="bg-black hover:bg-gray-500 leading-none p-4 rounded text-white"
               type="submit"
@@ -170,29 +141,19 @@ export const getServerSideProps = async (context) => {
   const prisma = new PrismaClient();
   await prisma.$connect();
 
-  const [channels, users] = await Promise.all([
-    prisma.channel
-      .findMany({
-        orderBy: {
-          name: "asc",
-        },
-      })
-      .then((response) => JSON.parse(JSON.stringify(response))),
-    prisma.user
-      .findMany({
-        orderBy: {
-          email: "asc",
-        },
-      })
-      .then((response) => JSON.parse(JSON.stringify(response))),
-  ]);
+  const channels = await prisma.channel
+  .findMany({
+    orderBy: {
+      name: "asc",
+    },
+  })
+  .then((response) => JSON.parse(JSON.stringify(response)))
 
   await prisma.$disconnect();
 
   return {
     props: {
       channels,
-      users,
     },
   };
 };

@@ -16,7 +16,7 @@ export const Select = memo(function InputForm({
       {label && (
         <span
           className={`block mb-1 ${
-            touched && error ? "text-red-300" : "text-gray-700"
+            touched && error ? "text-red-300" : ""
           } w-full`}
         >
           {label}
