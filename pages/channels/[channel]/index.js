@@ -1,25 +1,25 @@
-import { LayoutChannel } from "~/components/layout";
-import { PostShowcase } from "~/components/post";
-import { PrismaClient } from "@prisma/client";
+import { LayoutChannel } from '~/components/layout'
+import { PostShowcase } from '~/components/post'
+import { PrismaClient } from '@prisma/client'
 
 const Page = ({ channel, posts }) => {
   return (
     <LayoutChannel channel={channel}>
       <PostShowcase channel={channel} posts={posts} />
     </LayoutChannel>
-  );
-};
+  )
+}
 
 export const getStaticPaths = () => {
   return {
-    fallback: "blocking",
+    fallback: 'blocking',
     paths: [],
-  };
-};
+  }
+}
 
 export const getStaticProps = async (context) => {
-  const prisma = new PrismaClient();
-  await prisma.$connect();
+  const prisma = new PrismaClient()
+  await prisma.$connect()
 
   const [channel, posts] = await Promise.all([
     prisma.channel.findUnique({
@@ -34,9 +34,9 @@ export const getStaticProps = async (context) => {
         },
       },
     }),
-  ]);
+  ])
 
-  await prisma.$disconnect();
+  await prisma.$disconnect()
 
   return {
     props: {
@@ -44,7 +44,7 @@ export const getStaticProps = async (context) => {
       posts: JSON.parse(JSON.stringify(posts)),
     },
     revalidate: 1,
-  };
-};
+  }
+}
 
-export default Page;
+export default Page

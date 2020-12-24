@@ -1,13 +1,13 @@
 import axios from 'axios'
 import Cookie from 'js-cookie'
-import { createContainer } from "unstated-next";
+import { createContainer } from 'unstated-next'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react'
 
 const useContainer = () => {
   const { asPath, push } = useRouter()
 
-  const [user, setUser] = useState();
+  const [user, setUser] = useState()
   const [userCookie, setUserCookie] = useState()
 
   useEffect(() => {
@@ -15,10 +15,12 @@ const useContainer = () => {
     setUserCookie(cookie ?? {})
   }, [asPath])
 
-  const login = async values => {
+  const login = async (values) => {
     try {
-      const { redirect, user } = await axios.put('/api/v1/user', values).then(response => response.data)
-      
+      const { redirect, user } = await axios
+        .put('/api/v1/user', values)
+        .then((response) => response.data)
+
       Cookie.set('content_public', { email: user.email })
 
       setUser(user)
@@ -32,17 +34,14 @@ const useContainer = () => {
     await axios.delete('/api/v1/user')
 
     Cookie.remove('content_public')
-    
+
     setUser()
     setUserCookie()
 
     push('/login')
   }
 
-  return { login, logout, setUser, user, userCookie };
-};
+  return { login, logout, setUser, user, userCookie }
+}
 
-export const {
-  Provider: UserProvider,
-  useContainer: useUser,
-} = createContainer(useContainer);
+export const { Provider: UserProvider, useContainer: useUser } = createContainer(useContainer)

@@ -1,21 +1,21 @@
-import { createChannelLink } from "~/lib/channel";
-import Link from "next/link";
-import { useUser } from "~/containers/user";
+import { createChannelLink } from '~/lib/channel'
+import Link from 'next/link'
+import { useUser } from '~/containers/user'
 
 const Footer = () => {
   return (
     <div className="border-t w-full">
       <div className="max-w-5xl mx-auto">
         <div className="px-4 py-8 text-center">
-          &copy;2020, all rights reserved. Powered by{" "}
+          &copy;2020, all rights reserved. Powered by{' '}
           <Link href="/">
             <a className="hover:text-gray-500">Content.</a>
           </Link>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 export const LayoutChannel = ({ channel, children }) => {
   return (
@@ -32,7 +32,7 @@ export const LayoutChannel = ({ channel, children }) => {
             <button
               className="bg-black hover:bg-gray-500 leading-none p-4 rounded text-white"
               onClick={() => {
-                alert(`I don't do anything!`);
+                alert(`I don't do anything!`)
               }}
             >
               Subscribe
@@ -43,11 +43,11 @@ export const LayoutChannel = ({ channel, children }) => {
       {children}
       <Footer />
     </div>
-  );
-};
+  )
+}
 
 export const LayoutRoot = ({ children }) => {
-  const { userCookie } = useUser();
+  const { userCookie } = useUser()
 
   return (
     <div className="w-full">
@@ -79,11 +79,11 @@ export const LayoutRoot = ({ children }) => {
       {children}
       <Footer />
     </div>
-  );
-};
+  )
+}
 
 const User = () => {
-  const { logout, userCookie } = useUser();
+  const { logout, userCookie } = useUser()
 
   return userCookie?.email ? (
     <div className="bg-black w-full">
@@ -91,12 +91,12 @@ const User = () => {
         <button
           className="hover:text-gray-500"
           onClick={async () => {
-            await logout();
+            await logout()
           }}
         >
           Logout
         </button>
       </div>
     </div>
-  ) : null;
-};
+  ) : null
+}

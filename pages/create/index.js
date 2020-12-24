@@ -1,57 +1,57 @@
-import { Input } from "~/components/input";
-import { LayoutRoot } from "~/components/layout";
+import { Input } from '~/components/input'
+import { LayoutRoot } from '~/components/layout'
 import { POST } from '~/lib/http'
-import { PrismaClient } from "@prisma/client";
-import { Select } from "~/components/select";
-import { Textarea } from "~/components/textarea";
+import { PrismaClient } from '@prisma/client'
+import { Select } from '~/components/select'
+import { Textarea } from '~/components/textarea'
 import { useEffect } from 'react'
-import { useFormik } from "formik";
-import { useRouter } from "next/router";
-import { validator } from "~/lib/data";
+import { useFormik } from 'formik'
+import { useRouter } from 'next/router'
+import { validator } from '~/lib/data'
 
 const schema = {
   properties: {
-    body: { minLength: 1, message: { minLength: "Required" }, type: "string" },
-    channelId: { type: "number" },
+    body: { minLength: 1, message: { minLength: 'Required' }, type: 'string' },
+    channelId: { type: 'number' },
     meta: {
       properties: {
-        description: { maxLength: 140, type: "string" },
-        title: { maxLength: 70, type: "string" },
+        description: { maxLength: 140, type: 'string' },
+        title: { maxLength: 70, type: 'string' },
       },
-      type: "object",
+      type: 'object',
     },
   },
-  required: ["body", "channelId", "status"],
-  type: "object",
-};
+  required: ['body', 'channelId', 'status'],
+  type: 'object',
+}
 
 const Page = ({ channels }) => {
-  const { push } = useRouter();
+  const { push } = useRouter()
 
   const form = useFormik({
     initialValues: {
-      body: "",
-      channelId: "",
+      body: '',
+      channelId: '',
       meta: {
-        description: "",
-        title: "",
+        description: '',
+        title: '',
       },
-      status: "",
+      status: '',
     },
     onSubmit: async (values) => {
-      const post = await POST("/api/v1/posts", values)
+      const post = await POST('/api/v1/posts', values)
 
-      push(`/channels/${post.channel.name}/posts/${post.id}`);
+      push(`/channels/${post.channel.name}/posts/${post.id}`)
     },
     validate: (values) => {
-      return validator(values, schema);
+      return validator(values, schema)
     },
-  });
+  })
 
   useEffect(() => {
-      if (form.values?.channelId) {
-          form.setFieldValue('channelId', parseInt(form.values.channelId))
-      } 
+    if (form.values?.channelId) {
+      form.setFieldValue('channelId', parseInt(form.values.channelId))
+    }
   }, [form.values?.channelId])
 
   return (
@@ -101,8 +101,8 @@ const Page = ({ channels }) => {
               onBlur={form.handleBlur}
               onChange={form.handleChange}
               options={[
-                { title: "Draft", value: "drafted" },
-                { title: "Publish", value: "published" },
+                { title: 'Draft', value: 'drafted' },
+                { title: 'Publish', value: 'published' },
               ]}
               touched={form.touched.status}
               value={form.values.status}
@@ -134,28 +134,28 @@ const Page = ({ channels }) => {
         </form>
       </div>
     </LayoutRoot>
-  );
-};
+  )
+}
 
 export const getServerSideProps = async (context) => {
-  const prisma = new PrismaClient();
-  await prisma.$connect();
+  const prisma = new PrismaClient()
+  await prisma.$connect()
 
   const channels = await prisma.channel
-  .findMany({
-    orderBy: {
-      name: "asc",
-    },
-  })
-  .then((response) => JSON.parse(JSON.stringify(response)))
+    .findMany({
+      orderBy: {
+        name: 'asc',
+      },
+    })
+    .then((response) => JSON.parse(JSON.stringify(response)))
 
-  await prisma.$disconnect();
+  await prisma.$disconnect()
 
   return {
     props: {
       channels,
     },
-  };
-};
+  }
+}
 
-export default Page;
+export default Page

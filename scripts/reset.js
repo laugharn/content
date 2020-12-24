@@ -1,12 +1,6 @@
 const { PrismaClient } = require('@prisma/client')
 
-const tableNames = [
-    '_CategoryToChannel',
-    'Category',
-    'Channel',
-    'Post',
-    'User',
-]
+const tableNames = ['_CategoryToChannel', 'Category', 'Channel', 'Post', 'User']
 
 const reset = async () => {
   const prisma = new PrismaClient()

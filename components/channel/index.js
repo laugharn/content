@@ -1,5 +1,5 @@
-import { format } from "date-fns";
-import Link from "next/link";
+import { format } from 'date-fns'
+import Link from 'next/link'
 
 export const Channel = ({ channel, showBorder = true }) => {
   return (
@@ -16,7 +16,7 @@ export const Channel = ({ channel, showBorder = true }) => {
           </Link>
         </h2>
         <p className="mb-2 text-gray-700">
-          by {channel.owner?.meta?.displayName} • {format(new Date(), "MM/yy")}
+          by {channel.owner?.meta?.displayName} • {format(new Date(), 'MM/yy')}
         </p>
         {channel.meta?.description && <p className="text-gray-500">{channel.meta?.description}.</p>}
       </div>
@@ -26,8 +26,8 @@ export const Channel = ({ channel, showBorder = true }) => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
 export const Channels = ({ channels }) => {
   return (
@@ -39,8 +39,8 @@ export const Channels = ({ channels }) => {
             key={`channel-${channel.id}`}
             showBorder={index != channels.length - 1}
           />
-        );
+        )
       })}
     </>
-  );
-};
+  )
+}
