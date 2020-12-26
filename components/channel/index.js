@@ -1,46 +1,40 @@
-import { format } from 'date-fns'
 import Link from 'next/link'
+import { UserSignature } from '~/components/user'
+import { useTimestamp } from '~/lib/hook'
 
-export const Channel = ({ channel, showBorder = true }) => {
+export const Channel = ({ channel }) => {
+  const timestamp = useTimestamp(channel.createdAt)
+
   return (
-    <div className="flex flex-wrap w-full">
-      <div className="p-4 w-1/3">
-        <img className="block w-full" src={channel.meta?.image} />
-      </div>
-      <div className="p-4 w-2/3">
+    <div className="w-full">
+      <div className="p-4 w-full">
         <h2>
           <Link href={`/channels/${channel.name}`}>
-            <a className="font-bold leading-tight text-xl tracking-tight hover:text-gray-500">
-              {channel.meta?.title}
-            </a>
+            <a className="font-bold hover:text-gray-500">{channel.meta?.title}</a>
           </Link>
         </h2>
-        <p className="mb-2 text-gray-700">
-          by {channel.owner?.meta?.displayName} • {format(new Date(), 'MM/yy')}
-        </p>
-        {channel.meta?.description && <p className="text-gray-500">{channel.meta?.description}.</p>}
+        <p className="text-gray-700">Founded {timestamp}</p>
       </div>
-      {showBorder && (
+      {channel.meta?.description && (
         <div className="px-4 w-full">
-          <div className="border-b w-full" />
+          <p className="text-gray-500">{channel.meta?.description}.</p>
         </div>
       )}
+      <UserSignature user={channel.owner} />
     </div>
   )
 }
 
 export const Channels = ({ channels }) => {
   return (
-    <>
+    <div className="flex flex-wrap w-full">
       {channels.map((channel, index) => {
         return (
-          <Channel
-            channel={channel}
-            key={`channel-${channel.id}`}
-            showBorder={index != channels.length - 1}
-          />
+          <div className="w-1/3" key={`channel-${channel.id}`}>
+            <Channel channel={channel} />
+          </div>
         )
       })}
-    </>
+    </div>
   )
 }

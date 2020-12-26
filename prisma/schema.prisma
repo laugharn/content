@@ -65,6 +65,13 @@ model Post {
     updatedAt   DateTime  @default(now()) @updatedAt
 }
 
+model Role {
+    id    Int    @id @default(autoincrement())
+    name  String @unique
+    // Relations
+    users User[]
+}
+
 model Subscription {
     id        Int     @id @default(autoincrement())
     // Relations
@@ -83,6 +90,7 @@ model User {
     channels      Channel[]
     passes        Pass[]
     posts         Post[]
+    roles         Role[]
     subscriptions Subscription[]
     // Timestamps
     createdAt     DateTime       @default(now())

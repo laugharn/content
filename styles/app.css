@@ -1,6 +1,7 @@
 @tailwind base;
+@tailwind components;
 @tailwind utilities;
 
 .bar {
-    @apply bg-teal-300 fixed h-2 left-0 top-0 w-full z-50;
-  }
+  @apply bg-teal-300 fixed h-2 left-0 top-0 w-full z-50;
+}

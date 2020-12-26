@@ -2,10 +2,12 @@ const { PrismaClient } = require('@prisma/client')
 
 const tableNames = [
   '_CategoryToChannel',
+  '_RoleToUser',
   'Category',
   'Channel',
   'Pass',
   'Post',
+  'Role',
   'Subscription',
   'User',
 ]

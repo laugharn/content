@@ -7,9 +7,14 @@ Object.entries(defaultTheme.fontSize).forEach(([key, value]) => {
 })
 
 const config = {
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/aspect-ratio')],
   theme: {
     colors,
+    extend: {
+      lineHeight: {
+        'tighter': '1.125',
+      }
+    },
     fontFamily: {
       sans: ['Inter', 'sans-serif'],
     },

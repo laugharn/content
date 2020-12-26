@@ -1,8 +1,12 @@
 import { Content } from '../content'
+import { IconHappy } from '~/components/icon'
 import { kebabCase } from 'lodash'
 import Link from 'next/link'
+import { useTimestamp } from '~/lib/hook'
 
 export const Post = ({ channel, post, source }) => {
+  const timestamp = useTimestamp(post.createdAt)
+
   return (
     <div className="max-w-3xl mx-auto py-4">
       <div className="p-4 w-full">
@@ -13,14 +17,16 @@ export const Post = ({ channel, post, source }) => {
             </a>
           </Link>
         </h1>
-        {post.meta?.description && <p className="text-gray-700 text-lg">{post.meta?.description}</p>}
+        {post.meta?.description && (
+          <p className="text-gray-700 text-lg">{post.meta?.description}</p>
+        )}
       </div>
       <div className="flex p-4">
-        <div className="bg-black h-12 rounded w-12" />
+        <IconHappy className="text-black h-12 w-12" />
         <div className="pl-2">
           <ul>
-            <li>{post.user?.meta?.displayName}</li>
-            <li className="text-gray-300">{post.createdAt}</li>
+            <li className="font-bold">{post.user?.meta?.displayName}</li>
+            <li className="text-gray-500">{timestamp}</li>
           </ul>
         </div>
       </div>
@@ -57,7 +63,7 @@ export const PostShowcase = ({ channel, posts }) => {
 
   return (
     <div className="w-full">
-      <ShowcasePost channel={channel} post={showcasePost} />
+      {showcasePost && <ShowcasePost channel={channel} post={showcasePost} />}
       <div className="max-w-3xl mx-auto py-4">
         {otherPosts.map((post) => {
           return <PostPreview channel={channel} key={`post-${post.id}`} post={post} />
@@ -68,6 +74,8 @@ export const PostShowcase = ({ channel, posts }) => {
 }
 
 const ShowcasePost = ({ channel, post }) => {
+  const timestamp = useTimestamp(post.createdAt)
+
   return (
     <div className="flex flex-wrap max-w-3xl mx-auto py-4">
       <div className="p-4 w-1/2">
@@ -82,7 +90,7 @@ const ShowcasePost = ({ channel, post }) => {
           </Link>
         </h2>
         {post.meta?.description && <p className="text-gray-700">{post.meta?.description}</p>}
-        <p className="mt-4 text-gray-300">Dec 21, 2020</p>
+        <p className="mt-4 text-gray-300">{timestamp}</p>
       </div>
     </div>
   )
