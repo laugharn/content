@@ -17,18 +17,28 @@ const useContainer = () => {
     setUserCookie(cookie ?? {})
   }, [asPath])
 
+  const authenticate = (redirect, user) => {
+    Cookie.set('content_public', { email: user.email })
+
+    setUser(user)
+    setUserCookie({ email: user.email })
+
+    push(redirect)
+  }
+
+  const isSubscribed = channel => Boolean(user?.subscriptions.find(subscription => subscription.channelId === channel.id))
+
   const login = async (values) => {
     try {
-      const { redirect, user } = await axios
-        .put('/api/v1/user', values)
-        .then((response) => response.data)
+      if (values.dev || values.code) {
+        const { redirect, user } = await axios
+          .put('/api/v1/user', values)
+          .then((response) => response.data)
 
-      Cookie.set('content_public', { email: user.email })
-
-      setUser(user)
-      setUserCookie({ email: user.email })
-
-      push(redirect)
+        authenticate(redirect, user)
+      } else {
+        await axios.post('/api/v1/user', values)
+      }
     } catch (error) {}
   }
 
@@ -40,10 +50,10 @@ const useContainer = () => {
     setUser()
     setUserCookie()
 
-    push(`/login?redirect=${asPath}`)
+    push(`/get-started?redirect=${window.location.pathname}`)
   }
 
-  return { login, logout, setUser, user, userCookie, userHomeLink }
+  return { authenticate, isSubscribed, login, logout, setUser, user, userCookie, userHomeLink }
 }
 
 export const { Provider: UserProvider, useContainer: useUser } = createContainer(useContainer)

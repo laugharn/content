@@ -5,16 +5,22 @@ import { useProgress } from '~/lib/hook'
 import { useRouter } from 'next/router'
 
 const useContainer = () => {
-  useProgress()
   const { asPath } = useRouter()
-
-  useEffect(() => {
-    setAlerts([])
-  }, [asPath])
 
   const [alerts, setAlerts] = useState([])
   const [processing, setProcessing] = useState(false)
+  const [redirect, setRedirect] = useState()
   const [showMenu, setShowMenu] = useState(false)
+
+  useEffect(() => {
+    setAlerts([])
+
+    if (asPath) {
+      setRedirect(asPath === '/' ? '/home' : window.location.pathname)
+    }
+  }, [asPath])
+
+  useProgress()
 
   const createAlert = (alert) => {
     setAlerts([{ id: slug(), ...alert }])
@@ -26,6 +32,7 @@ const useContainer = () => {
     alerts,
     createAlert,
     processing,
+    redirect,
     resetAlerts,
     setAlerts,
     setProcessing,

@@ -1,9 +1,6 @@
-import axios from 'axios'
 import { Input } from '~/components/input'
 import { LayoutRoot } from '~/components/layout'
-import { POST } from '~/lib/http'
 import { useFormik } from 'formik'
-import { useRouter } from 'next/router'
 import { useUser } from '~/containers/user'
 import { validator } from '~/lib/data'
 
@@ -16,8 +13,7 @@ const schema = {
 }
 
 const Page = () => {
-  const { push } = useRouter()
-  const { login, setUser } = useUser()
+  const { login } = useUser()
 
   const emailForm = useFormik({
     initialValues: {

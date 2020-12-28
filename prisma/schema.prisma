@@ -33,17 +33,19 @@ model Channel {
 }
 
 model Pass {
-    id        Int      @id @default(autoincrement())
+    id         Int       @id @default(autoincrement())
     // Fields
-    code      String   @unique
-    meta      Json     @default("{}")
-    redirect  String?
+    code       String    @unique
+    email      String
+    meta       Json      @default("{}")
+    redirect   String?
     // Relations
-    userId    Int
-    user      User     @relation(fields: [userId], references: [id])
+    userId     Int?
+    user       User?     @relation(fields: [userId], references: [id])
     // Timestamps
-    createdAt DateTime @default(now())
-    expiredAt DateTime
+    acceptedAt DateTime?
+    createdAt  DateTime  @default(now())
+    expiredAt  DateTime
 }
 
 model Post {
@@ -82,17 +84,18 @@ model Subscription {
 }
 
 model User {
-    id            Int            @id @default(autoincrement())
+    id              Int            @id @default(autoincrement())
     // Fields
-    email         String         @unique
-    meta          Json           @default("{}")
+    email           String         @unique
+    meta            Json           @default("{}")
     // Relations
-    channels      Channel[]
-    passes        Pass[]
-    posts         Post[]
-    roles         Role[]
-    subscriptions Subscription[]
+    channels        Channel[]
+    passes          Pass[]
+    posts           Post[]
+    roles           Role[]
+    subscriptions   Subscription[]
     // Timestamps
-    createdAt     DateTime       @default(now())
-    updatedAt     DateTime       @default(now()) @updatedAt
+    authenticatedAt DateTime?
+    createdAt       DateTime       @default(now())
+    updatedAt       DateTime       @default(now()) @updatedAt
 }

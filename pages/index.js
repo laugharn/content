@@ -9,7 +9,7 @@ const Page = ({ channels }) => {
         <div className="flex flex-wrap py-4 w-full">
           <div className="p-4 w-1/2">
             <h1 className="font-bold leading-tighter text-4xl tracking-tight">
-              The only place on the internet for content.
+              Content is the only place on the internet for content.
             </h1>
             <p className="text-lg text-gray-700">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vivamus.
@@ -22,7 +22,7 @@ const Page = ({ channels }) => {
           </div>
         </div>
         <div className="font-bold leading-tighter max-w-5xl mx-auto p-4 text-4xl tracking-tight w-full">
-          Content you can't find anywhere else.
+          You won't find this anywhere else.
         </div>
         <Channels channels={channels} />
       </div>

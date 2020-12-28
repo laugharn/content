@@ -11,7 +11,7 @@ export const getServerSideProps = withSession(async (context) => {
   if (!user) {
     return {
       redirect: {
-        destination: `/login?redirect=/home`,
+        destination: `/get-started?redirect=/home`,
         permanent: false,
       },
     }
